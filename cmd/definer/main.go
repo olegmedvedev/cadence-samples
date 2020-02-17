@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cadence-samples/internal"
 	"github.com/uber-common/cadence-samples/cmd/samples/common"
 	"go.uber.org/cadence/worker"
 )
@@ -10,7 +11,7 @@ func startWorkers(h *common.SampleHelper) {
 		MetricsScope: h.Scope,
 		Logger:       h.Logger,
 	}
-	h.StartWorkers(h.Config.DomainName, ApplicationName, workerOptions)
+	h.StartWorkers(h.Config.DomainName, internal.DefinerWorkerTaskList, workerOptions)
 }
 
 func main() {

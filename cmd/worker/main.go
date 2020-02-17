@@ -9,26 +9,26 @@ import (
 	"time"
 )
 
+const taskList = "MainTaskList"
+
 // This needs to be done as part of a bootstrap step when the process starts.
 // The workers are supposed to be long running.
 func startWorkers(h *common.SampleHelper) {
-	// Configure worker options.
 	workerOptions := worker.Options{
 		MetricsScope: h.Scope,
 		Logger:       h.Logger,
 	}
-	h.StartWorkers(h.Config.DomainName, ApplicationName, workerOptions)
+	h.StartWorkers(h.Config.DomainName, taskList, workerOptions)
 }
 
 func startWorkflow(h *common.SampleHelper) {
 	workflowOptions := client.StartWorkflowOptions{
-		TaskList:                        ApplicationName,
+		TaskList:                        taskList,
 		ExecutionStartToCloseTimeout:    time.Hour,
 		DecisionTaskStartToCloseTimeout: time.Hour,
+		ID:                              "TEST-" + uuid.New(),
 	}
-
-	workflowOptions.ID = "TEST-" + uuid.New()
-	h.StartWorkflow(workflowOptions, "SampleWorkflow")
+	h.StartWorkflow(workflowOptions, sampleWorkflowName)
 }
 
 func main() {
